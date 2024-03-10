@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Honk&family=Kode+Mono:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles/main.css" />
+    <title>To-Do</title>
+  </head>
+
+  <body>
+    <main>
+      <div class="box" id="heading">
+        <h1><%= listTitle %></h1>
+      </div>
+      <div class="box">
+        <% for(let item of listItems){%>
+        <div class="item">
+          <p class="listItem" id="title<%=item.id%>"><%= item.title %></p>
+
+          <div class="buttons">
+            <form class="edit" action="/edit" method="post">
+              <input
+                type="hidden"
+                name="updatedItemId"
+                value="<%= item.id %>"
+              />
+              <input
+                class="editItem"
+                id="input<%=item.id%>"
+                type="text"
+                name="updatedItemTitle"
+                value="<%= item.title %>"
+                autocomplete="off"
+                autofocus="true"
+                hidden="true"
+              />
+              <button
+                id="done<%=item.id%>"
+                class="edit doneBtn"
+                type="submit"
+                hidden
+              >
+                <ion-icon name="checkmark-outline" class="icon"></ion-icon>
+              </button>
+            </form>
+            <button
+              id="edit<%=item.id%>"
+              class="edit editBtn"
+              onclick="handler('<%=item.id%>')"
+            >
+              <ion-icon name="create-outline" class="icon"></ion-icon>
+            </button>
+
+            <form action="/delete" method="post">
+              <input type="hidden" name="deleteItemId" value="<%= item.id %>" />
+              <button onchange="this.form.submit()" class="deleteBtn">
+                <ion-icon name="close-outline" class="icon"></ion-icon>
+              </button>
+            </form>
+          </div>
+        </div>
+        <% } %>
+
+        <form class="item" action="/add" method="post">
+          <input
+            class="addItem"
+            type="text"
+            name="newItem"
+            placeholder="New Item"
+            autocomplete="off"
+            autofocus="true"
+          />
+          <button
+            class="addBtn"
+            type="submit"
+            name="list"
+            value="<%= listTitle%>"
+          >
+            +
+          </button>
+        </form>
+      </div>
+
+      <script>
+        function handler(id) {
+          document.getElementById("title" + id).setAttribute("hidden", true);
+          document.getElementById("edit" + id).setAttribute("hidden", true);
+          document.getElementById("done" + id).removeAttribute("hidden");
+          document.getElementById("input" + id).removeAttribute("hidden");
+        }
+      </script>
+      <script
+        type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+      ></script>
+      <script
+        nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+      ></script>
+    </main>
+  </body>
+</html>
